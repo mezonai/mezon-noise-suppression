@@ -39,8 +39,11 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
     await this.ensureGraph();
   };
 
-  restart = async (): Promise<void> => {
-    await this.teardownGraph();
+  restart = async (opts: { track?: MediaStreamTrack; mediaStreamTrack?: MediaStreamTrack }): Promise<void> => {
+    const track = opts.track ?? opts.mediaStreamTrack;
+    if (track) {
+      this.originalTrack = track;
+    }
     await this.ensureGraph();
   };
 
@@ -61,6 +64,18 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
   isNoiseSuppressionEnabled(): boolean {
     return this.processor.isNoiseSuppressionEnabled();
   }
+
+  suspend = async (): Promise<void> => {
+    if (this.audioContext && this.audioContext.state === 'running') {
+      await this.audioContext.suspend();
+    }
+  };
+
+  resume = async (): Promise<void> => {
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      await this.audioContext.resume();
+    }
+  };
 
   destroy = async (): Promise<void> => {
     await this.teardownGraph();
@@ -83,14 +98,24 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
     }
 
     await this.processor.initialize();
-    const node = await this.processor.createAudioWorkletNode(this.audioContext);
+
+    if (!this.workletNode) {
+      const node = await this.processor.createAudioWorkletNode(this.audioContext);
+      this.workletNode = node;
+    }
+
+    if (!this.destination) {
+      this.destination = this.audioContext.createMediaStreamDestination();
+      this.processedTrack = this.destination.stream.getAudioTracks()[0];
+    }
+
+    if (this.sourceNode) {
+      this.sourceNode.disconnect();
+    }
 
     this.sourceNode = this.audioContext.createMediaStreamSource(new MediaStream([this.originalTrack]));
-    this.destination = this.audioContext.createMediaStreamDestination();
 
-    this.sourceNode.connect(node).connect(this.destination);
-    this.workletNode = node;
-    this.processedTrack = this.destination.stream.getAudioTracks()[0];
+    this.sourceNode.connect(this.workletNode).connect(this.destination);
 
     await this.setEnabled(this.enabled);
   }
