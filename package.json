@@ -1,6 +1,6 @@
 {
   "name": "deepfilternet3-noise-filter",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Custom audio processor with DeepFilterNet3 noise filtering integrated with LiveKit client",
   "type": "module",
   "main": "dist/index.js",
@@ -70,10 +70,10 @@
   "packageManager": "yarn@1.22.22",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phuvinh010701/livekit-deepfilternet3-noise-filter.git"
+    "url": "git+https://github.com/mezonai/mezon-noise-suppression.git"
   },
   "bugs": {
-    "url": "https://github.com/phuvinh010701/livekit-deepfilternet3-noise-filter/issues"
+    "url": "https://github.com/mezonai/mezon-noise-suppression/issues"
   },
-  "homepage": "https://github.com/phuvinh010701/livekit-deepfilternet3-noise-filter#readme"
+  "homepage": "https://github.com/mezonai/mezon-noise-suppression#readme"
 }

@@ -126,7 +126,7 @@ filter.setSuppressionLevel(60);
 filter.setEnabled(false); // Disable temporarily
 ```
 
-For a complete React example, see: [DeepFilterNet3 React Example](https://github.com/phuvinh010701/DeepFilterNet3-React-Example)
+For a complete React example, see: [DeepFilterNet3 React Example](https://github.com/mezonai/DeepFilterNet3-React-Example)
 
 ### Build
 
