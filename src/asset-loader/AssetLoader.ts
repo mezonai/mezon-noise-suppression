@@ -15,7 +15,7 @@ export class AssetLoader {
 
   getAssetUrls(): AssetUrls {
     return {
-      wasm: this.getCdnUrl('pkg/df_bg.wasm'),
+      wasm: this.getCdnUrl('pkg/df_bg_v2.wasm'),
       model: this.getCdnUrl('models/DeepFilterNet3_onnx.tar.gz')
     };
   }

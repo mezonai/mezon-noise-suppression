@@ -2,6 +2,7 @@ import * as wasm_bindgen from '../df3/df';
 import { WorkletMessageTypes } from '../constants';
 import type { ProcessorOptions, DeepFilterModel } from '../interfaces';
 
+
 class DeepFilterAudioProcessor extends AudioWorkletProcessor {
   private dfModel: DeepFilterModel | null = null;
   private inputBuffer: Float32Array;
@@ -14,6 +15,12 @@ class DeepFilterAudioProcessor extends AudioWorkletProcessor {
   private isInitialized = false;
   private bufferSize: number;
   private tempFrame: Float32Array | null = null;
+  private stats = {
+    count: 0,
+    totalTime: 0,
+    maxTime: 0,
+    minTime: Infinity
+  };
 
   constructor(options: AudioWorkletNodeOptions & { processorOptions: ProcessorOptions }) {
     super();
@@ -37,6 +44,8 @@ class DeepFilterAudioProcessor extends AudioWorkletProcessor {
       this.dfModel = { handle, frameLength };
 
       this.bufferSize = frameLength * 4;
+      console.log('frameLength', frameLength);
+      console.log('bufferSize', this.bufferSize);
       this.inputBuffer = new Float32Array(this.bufferSize);
       this.outputBuffer = new Float32Array(this.bufferSize);
 
@@ -111,7 +120,33 @@ class DeepFilterAudioProcessor extends AudioWorkletProcessor {
         this.inputReadPos = (this.inputReadPos + 1) % this.bufferSize;
       }
 
+      const start = Date.now();
       const processed = wasm_bindgen.df_process_frame(this.dfModel.handle, this.tempFrame);
+      const end = Date.now();
+      const duration = end - start;
+
+      // Update statistics
+      this.stats.count++;
+      this.stats.totalTime += duration;
+      this.stats.maxTime = Math.max(this.stats.maxTime, duration);
+      this.stats.minTime = Math.min(this.stats.minTime, duration);
+
+      // Log every 100 frames (approx every 1-2 seconds depending on hop size)
+      if (this.stats.count >= 100) {
+        const avg = this.stats.totalTime / this.stats.count;
+        console.log(
+          `[DeepFilter Stats] Frames: 100 | ` +
+          `Avg: ${avg.toFixed(3)}ms | ` +
+          `Min: ${this.stats.minTime.toFixed(3)}ms | ` +
+          `Max: ${this.stats.maxTime.toFixed(3)}ms`
+        );
+
+        // Reset stats
+        this.stats.count = 0;
+        this.stats.totalTime = 0;
+        this.stats.maxTime = 0;
+        this.stats.minTime = Infinity;
+      }
 
       // Write to output ring buffer
       for (let i = 0; i < processed.length; i++) {
