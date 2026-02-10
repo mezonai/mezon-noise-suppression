@@ -7,7 +7,7 @@ import workletCode from './worklet/DeepFilterWorklet.ts?worklet-code';
 
 export type { DeepFilterNet3ProcessorConfig };
 
-export class DeepFilterNet3Processor {
+export class DeepFilterNet3Core {
   private assetLoader: AssetLoader;
   private assets: ProcessorAssets | null = null;
   private workletNode: AudioWorkletNode | null = null;

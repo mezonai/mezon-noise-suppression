@@ -2,7 +2,7 @@
 
 ### Bug Fixes
 
-* update default CDN URL for asset loading ([d8540df](https://github.com/mezonai/mezon-noise-suppression/commit/d8540df52953cdfae114c294bbd7d6ce9ebe45c2))
+* update CDN URL in README and AssetLoader, fix React example link ([2545176](https://github.com/mezonai/mezon-noise-suppression/commit/2545176cbd17883cd824c00c7ba3b96a7afa909d))
 
 ## 1.1.2 (2025-12-05)
 

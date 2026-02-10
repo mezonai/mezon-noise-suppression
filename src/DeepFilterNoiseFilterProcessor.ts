@@ -1,4 +1,4 @@
-import { DeepFilterNet3Processor } from './DeepFilterNet3Processor';
+import { DeepFilterNet3Core } from './DeepFilterNet3Core';
 import type { TrackProcessor, AudioProcessorOptions, Track } from 'livekit-client';
 import type { DeepFilterNoiseFilterOptions } from './interfaces';
 
@@ -11,7 +11,7 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
   sourceNode: MediaStreamAudioSourceNode | null = null;
   workletNode: AudioWorkletNode | null = null;
   destination: MediaStreamAudioDestinationNode | null = null;
-  processor: DeepFilterNet3Processor;
+  processor: DeepFilterNet3Core;
   enabled = true;
   originalTrack?: MediaStreamTrack;
 
@@ -23,7 +23,7 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
     };
 
     this.enabled = options.enabled ?? true;
-    this.processor = new DeepFilterNet3Processor(cfg);
+    this.processor = new DeepFilterNet3Core(cfg);
   }
 
   static isSupported(): boolean {

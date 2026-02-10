@@ -15,13 +15,13 @@ npm install deepfilternet3-noise-filter
 ### Basic Audio Processing
 
 ```javascript
-import { DeepFilterNet3Processor } from 'deepfilternet3-noise-filter';
+import { DeepFilterNet3Core } from 'deepfilternet3-noise-filter';
 
 // Create audio context
 const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 48000 });
 
 // Initialize processor
-const proc = new DeepFilterNet3Processor({
+const proc = new DeepFilterNet3Core({
   sampleRate: 48000,
   noiseReductionLevel: 0
 });
@@ -44,7 +44,7 @@ proc.setSuppressionLevel(50);
 
 ```javascript
 import React, { useRef, useEffect } from 'react';
-import { DeepFilterNet3Processor } from 'deepfilternet3-noise-filter';
+import { DeepFilterNet3Core } from 'deepfilternet3-noise-filter';
 
 function AudioProcessor({ stream, level = 50 }) {
   const ctxRef = useRef(null);
@@ -56,7 +56,7 @@ function AudioProcessor({ stream, level = 50 }) {
       const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 48000 });
       ctxRef.current = ctx;
 
-      const proc = new DeepFilterNet3Processor({
+      const proc = new DeepFilterNet3Core({
         sampleRate: 48000,
         noiseReductionLevel: 0
       });

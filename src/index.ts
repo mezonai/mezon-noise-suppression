@@ -1,5 +1,5 @@
-export { DeepFilterNet3Processor } from './DeepFilterNet3Processor';
-export type { DeepFilterNet3ProcessorConfig } from './DeepFilterNet3Processor';
+export { DeepFilterNet3Core } from './DeepFilterNet3Core';
+export type { DeepFilterNet3ProcessorConfig } from './DeepFilterNet3Core';
 
 export { DeepFilterNoiseFilterProcessor, DeepFilterNoiseFilter } from './DeepFilterNoiseFilterProcessor';
 export type { DeepFilterNoiseFilterOptions } from './DeepFilterNoiseFilterProcessor';
