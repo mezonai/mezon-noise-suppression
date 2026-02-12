@@ -10,21 +10,6 @@
 */
 export function df_set_atten_lim(st: number, lim_db: number): void;
 /**
-* Processes a chunk of samples.
-*
-* Args:
-*     - df_state: Created via df_create()
-*     - input: Input buffer of length df_get_frame_length()
-*     - output: Output buffer of length df_get_frame_length()
-*
-* Returns:
-*     - Local SNR of the current frame.
-* @param {number} st
-* @param {Float32Array} input
-* @returns {Float32Array}
-*/
-export function df_process_frame(st: number, input: Float32Array): Float32Array;
-/**
 * Set DeepFilterNet post filter beta. A beta of 0 disables the post filter.
 *
 * Args:
@@ -54,6 +39,21 @@ export function df_get_frame_length(st: number): number;
 */
 export function df_create(model_bytes: Uint8Array, atten_lim: number): number;
 /**
+* Processes a chunk of samples.
+*
+* Args:
+*     - df_state: Created via df_create()
+*     - input: Input buffer of length df_get_frame_length()
+*     - output: Output buffer of length df_get_frame_length()
+*
+* Returns:
+*     - Local SNR of the current frame.
+* @param {number} st
+* @param {Float32Array} input
+* @returns {Float32Array}
+*/
+export function df_process_frame(st: number, input: Float32Array): Float32Array;
+/**
 */
 export class DFState {
   free(): void;
@@ -69,8 +69,8 @@ export interface InitOutput {
   readonly df_process_frame: (a: number, b: number, c: number) => number;
   readonly df_set_atten_lim: (a: number, b: number) => void;
   readonly df_set_post_filter_beta: (a: number, b: number) => void;
-  readonly __wbindgen_export_0: (a: number, b: number) => number;
-  readonly __wbindgen_export_1: (a: number) => void;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
+  readonly __wbindgen_exn_store: (a: number) => void;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;

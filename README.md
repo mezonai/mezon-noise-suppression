@@ -128,6 +128,37 @@ filter.setEnabled(false); // Disable temporarily
 
 For a complete React example, see: [DeepFilterNet3 React Example](https://github.com/phuvinh010701/DeepFilterNet3-React-Example)
 
+### Custom CDN Configuration
+
+By default, the package loads WASM and model files from the bundled assets. You can optionally configure a custom CDN:
+
+```javascript
+const filter = new DeepFilterNoiseFilterProcessor({
+  sampleRate: 48000,
+  noiseReductionLevel: 80,
+  assetConfig: {
+    cdnUrl: 'https://your-cdn-url.com/path/to/assets'
+  }
+});
+```
+
+#### Version-Specific Asset Paths
+
+Different versions use different asset path structures:
+
+**Version <= 1.1.2:**
+- Assets are loaded directly from the base path
+- WASM: `{cdnUrl}/pkg/df_bg.wasm`
+- Model: `{cdnUrl}/models/DeepFilterNet3_onnx.tar.gz`
+
+**Version >= 1.2.0:**
+- Assets are loaded from a `v2/` subdirectory (automatically added)
+- WASM: `{cdnUrl}/v2/pkg/df_bg.wasm`
+- Model: `{cdnUrl}/v2/models/DeepFilterNet3_onnx.tar.gz`
+- Built with SIMD optimizations for ~20-30% better performance
+
+**Note:** The `v2/` prefix is added automatically by the package for version >= 1.2.0, so you don't need to include it in your `cdnUrl` configuration.
+
 ### Build
 
 ```bash
@@ -151,24 +182,61 @@ The included model archive `DeepFilterNet3_onnx.tar.gz` is from:
 
 Please refer to the upstream repository for licensing and updates.
 
-### Building assets from source (contributors)
+### Building WASM from source (contributors)
+
+#### WASM Build Configuration
+
+The WASM module is built with optimized settings in `libDF/Cargo.toml`:
+
+**Rust Compiler Settings** (`[profile.release]`):
+```toml
+opt-level = 3          # Maximum optimization for performance
+lto = "thin"           # Thin Link-Time Optimization
+codegen-units = 1      # Single codegen unit for better optimization
+panic = "abort"        # Smaller binary size
+```
+
+**WASM Optimizer Settings** (`[package.metadata.wasm-pack.profile.release]`):
+```toml
+wasm-opt = [
+    "-O4",                                  # Highest optimization level
+    "--enable-bulk-memory",                 # Enable bulk memory operations
+    "--enable-nontrapping-float-to-int"     # Enable non-trapping float-to-int conversions
+]
+```
+
+#### Build Steps
 
 To regenerate the WASM package and copy resources from the upstream project:
 
 ```bash
+# Clone the DeepFilterNet repository
 git clone https://github.com/Rikorose/DeepFilterNet/
-cd DeepFilterNet
-bash scripts/build_wasm_package.sh
+cd DeepFilterNet/libDF
 
-# Copy WASM glue into this repo's pkg/
-cp -r libdf/pkg ../livekit-deepfilternet3-noise-filter/df3
+# Configure Cargo.toml with the optimization settings above
+# Then build the WASM package with target features
+RUSTFLAGS="-C target-feature=+simd128,+bulk-memory,+nontrapping-fptoint,+mutable-globals" \
+  wasm-pack build --target web --release --features wasm
 
-cd ../livekit-deepfilternet3-noise-filter
+# Copy WASM files to this repo
+cd ..
+cp -r libDF/pkg ../mezon-noise-suppression/df3
+
+cd ../mezon-noise-suppression
+yarn build
 ```
 
-Notes:
-- Ensure the destination paths match this repo's layout (`df3`).
-- After copying, run `yarn build`.
+**Build Notes:**
+- **RUSTFLAGS target features:**
+  - `+simd128`: Enable SIMD 128-bit operations for vectorized processing
+  - `+bulk-memory`: Enable efficient bulk memory operations (memcpy, memset)
+  - `+nontrapping-fptoint`: Enable non-trapping float-to-int conversions
+  - `+mutable-globals`: Enable mutable global variables
+- **Version <= 1.1.2**: Built without advanced WebAssembly features
+- **Version >= 1.2.0**: Built with full WebAssembly feature set for optimal performance
+- Ensure `wasm-pack` is installed: `cargo install wasm-pack`
+- Browser requirements: Chrome 91+, Firefox 89+, Safari 16.4+ (for SIMD support)
 
 ## License
 

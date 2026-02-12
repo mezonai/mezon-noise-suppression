@@ -1,3 +1,15 @@
+## [1.2.0](https://github.com/mezonai/mezon-noise-suppression/compare/v1.1.4...v1.2.0) (2026-02-10)
+
+### Features
+
+* apply SIMD in wasm ([bc95bdd](https://github.com/mezonai/mezon-noise-suppression/commit/bc95bdd15c0cbd8e458b4ca9377b8b18f4c9f3f6))
+
+### Bug Fixes
+
+* update cicd to use trusted publisher ([ba8e5ef](https://github.com/mezonai/mezon-noise-suppression/commit/ba8e5ef15b740eb61a4404688b0ce6fd8eb03d49))
+* update cicd to use trusted publisher ([464ec63](https://github.com/mezonai/mezon-noise-suppression/commit/464ec630fc986e8bfa661c3ff3a961b2e0549abd))
+* update default CDN URL for asset loading ([d8540df](https://github.com/mezonai/mezon-noise-suppression/commit/d8540df52953cdfae114c294bbd7d6ce9ebe45c2))
+
 ## [1.1.4](https://github.com/mezonai/mezon-noise-suppression/compare/v1.1.3...v1.1.4) (2026-01-08)
 
 ### Bug Fixes
