@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/mezonai/mezon-noise-suppression/compare/v1.2.0...v1.2.1) (2026-02-12)
+
+### Bug Fixes
+
+* build wasm with optized options ([b36d52b](https://github.com/mezonai/mezon-noise-suppression/commit/b36d52bbd5a6d9a466fb7743263d4940f4ca9370))
+
 ## [1.2.0](https://github.com/mezonai/mezon-noise-suppression/compare/v1.1.4...v1.2.0) (2026-02-10)
 
 ### Features
