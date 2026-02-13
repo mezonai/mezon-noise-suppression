@@ -200,6 +200,7 @@ panic = "abort"        # Smaller binary size
 ```toml
 wasm-opt = [
     "-O4",                                  # Highest optimization level
+    "--enable-simd",                        # Enable simd
     "--enable-bulk-memory",                 # Enable bulk memory operations
     "--enable-nontrapping-float-to-int"     # Enable non-trapping float-to-int conversions
 ]
