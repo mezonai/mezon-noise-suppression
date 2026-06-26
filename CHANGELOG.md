@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/mezonai/mezon-noise-suppression/compare/v1.2.1...v1.3.0) (2026-06-26)
+
+### Features
+
+* release deepfilternet3-noise-filter, bumpt tract version to 0.23.3 ([9811b07](https://github.com/mezonai/mezon-noise-suppression/commit/9811b07d1eee990b5fef745c06cc1eeef13bf8b1))
+
 ## [1.2.1](https://github.com/mezonai/mezon-noise-suppression/compare/v1.2.0...v1.2.1) (2026-02-12)
 
 ### Bug Fixes
