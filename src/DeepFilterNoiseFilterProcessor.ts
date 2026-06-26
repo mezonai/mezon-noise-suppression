@@ -66,13 +66,13 @@ export class DeepFilterNoiseFilterProcessor implements TrackProcessor<Track.Kind
   }
 
   suspend = async (): Promise<void> => {
-    if (this.audioContext && this.audioContext.state === 'running') {
+    if (this.audioContext?.state === 'running') {
       await this.audioContext.suspend();
     }
   };
 
   resume = async (): Promise<void> => {
-    if (this.audioContext && this.audioContext.state === 'suspended') {
+    if (this.audioContext?.state === 'suspended') {
       await this.audioContext.resume();
     }
   };
